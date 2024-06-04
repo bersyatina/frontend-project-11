@@ -7,17 +7,13 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
   entry: './src/index.js',
-  performance: {
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000
-  },
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
+    port: 5900,
     open: true,
     host: 'localhost',
-    port: 4000,
   },
   plugins: [
     new HtmlWebpackPlugin({
