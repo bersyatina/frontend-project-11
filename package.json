@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "main": "index.js",
+  "engines": {
+    "node": "20.12.2"
+  },
   "scripts": {
     "test": "test",
     "build": "NODE_ENV=production webpack --mode production",
