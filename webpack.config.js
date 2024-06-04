@@ -7,8 +7,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
   entry: './src/index.js',
-  externals: {
-    express: 'express',
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
