@@ -4,4 +4,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/efd67dca817ab522d38a/test_coverage)](https://codeclimate.com/github/bersyatina/frontend-project-11/test_coverage)
 
 ### Demo:
-https://frontend-project-11-jo7v.onrender.com
+https://frontend-project-11-delta-one.vercel.app/
