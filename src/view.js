@@ -13,7 +13,6 @@ const showMessage = (paragraph, message) => {
 };
 
 const showErrorMessage = (paragraph, error, i18nextInstance) => {
-  console.log(error)
   const message = i18nextInstance.t(error.message);
   clearMessage(paragraph);
   showMessage(paragraph, message);
@@ -156,6 +155,8 @@ export default (state, entities, i18nextInstance) => onChange(state, (path, valu
       processHandler(entities, state.sendingProcess.status, i18nextInstance);
       break;
     case 'sendingProcess.errors':
+      showErrorMessage(entities.feedback, state.sendingProcess.errors, i18nextInstance);
+      break;
     case 'form.errors':
       showErrorMessage(entities.feedback, value, i18nextInstance);
       break;
