@@ -103,7 +103,7 @@ const setPost = (post, buttonName, state) => {
   linkTag.setAttribute('data-id', post.id);
   linkTag.setAttribute('target', '_blank');
   linkTag.setAttribute('rel', 'noopener noreferrer');
-  linkTag.textContent = post.description;
+  linkTag.textContent = post.title;
   li.append(linkTag);
 
   const button = document.createElement('button');

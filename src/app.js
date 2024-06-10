@@ -84,6 +84,7 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
       setTimeout(updatePosts, defaultTimeout);
       return;
     }
+
     const promises = feeds.map(({ url }) => axiosInstance.get(getRssData(url))
       .then((response) => {
         const parsedData = parseRss(response.data.contents);
