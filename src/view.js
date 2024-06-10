@@ -13,6 +13,7 @@ const showMessage = (paragraph, message) => {
 };
 
 const showErrorMessage = (paragraph, error, i18nextInstance) => {
+  console.log(error)
   const message = i18nextInstance.t(error.message);
   clearMessage(paragraph);
   showMessage(paragraph, message);

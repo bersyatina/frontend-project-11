@@ -33,6 +33,7 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
         watchedState.sendingProcess.status = 'added';
       })
       .catch((error) => {
+        console.log(error.code);
         watchedState.sendingProcess.errors = errorsCodes[error.code] ?? error;
         watchedState.sendingProcess.status = 'failed';
       });
