@@ -22,7 +22,7 @@ const getPosts = (xmlDocument) => {
       title: title ? title.textContent : null,
       description: description ? description.textContent : null,
       link: link ? link.textContent : null,
-      id: id ? id.textContent : null,
+      id: id ? id.textContent.replace(/\D/g, '') : null,
       pubDate: pubDate ? Date.parse(pubDate.textContent) : null,
     };
   });

@@ -49,11 +49,25 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
         watchedState.form.isValid = false;
         return;
       }
-      // отправка формы
       watchedState.sendingProcess.status = 'loading';
       feedRequest(url);
     });
   };
+
+  const postExist = (postId) => state.posts.some((post) => post.id === postId);
+
+  const readPost = (e) => {
+    const readPostId = e.target.dataset.id;
+    if (!postExist(readPostId)) {
+      return;
+    }
+    watchedState.openedPosts = [...watchedState.openedPosts, readPostId];
+    watchedState.openedPostInModal = readPostId;
+  };
+
+  if (entities.postsDiv) {
+    entities.postsDiv.addEventListener('click', readPost);
+  }
 
   entities.form.objectForm.addEventListener('submit', onSubmittedForm);
 
@@ -100,6 +114,7 @@ export default () => {
     feedback: document.querySelector('.feedback'),
     feedsDiv: document.querySelector('.feeds'),
     postsDiv: document.querySelector('.posts'),
+    modal: document.querySelector('#modal'),
   };
 
   const initState = {
@@ -113,6 +128,8 @@ export default () => {
     },
     feeds: [],
     posts: [],
+    openedPosts: [],
+    openedPostInModal: null,
     language,
   };
 
