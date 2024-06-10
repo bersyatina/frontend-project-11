@@ -19,7 +19,7 @@ const showErrorMessage = (paragraph, error, i18nextInstance) => {
   paragraph.classList.add('text-danger');
 };
 
-const processHandler = (entities, processStatus, i18nextInstance) => {
+const handleProcess = (entities, processStatus, i18nextInstance) => {
   switch (processStatus) {
     case 'wait':
       clearMessage(entities.feedback);
@@ -152,7 +152,7 @@ export default (state, entities, i18nextInstance) => onChange(state, (path, valu
       entities.form.input.focus();
       break;
     case 'sendingProcess.status':
-      processHandler(entities, state.sendingProcess.status, i18nextInstance);
+      handleProcess(entities, state.sendingProcess.status, i18nextInstance);
       break;
     case 'sendingProcess.errors':
       showErrorMessage(entities.feedback, state.sendingProcess.errors, i18nextInstance);

@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import axios from 'axios';
 import watch from './view';
-import validator from './validator';
+import validate from './validator';
 import parseRss from './rssParser';
 import resources from './lang/langs.js';
 
@@ -24,7 +24,7 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
   const state = { ...initState };
   const watchedState = watch(state, entities, i18nextInstance);
 
-  const feedRequest = (url) => {
+  const getFeedRequest = (url) => {
     axiosInstance.get(getRssData(url))
       .then(({ data }) => {
         const { feed, posts } = parseRss(data.contents);
@@ -34,7 +34,6 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
       })
       .catch((error) => {
         watchedState.sendingProcess.errors = errorsCodes[error.code] ?? error;
-        // watchedState.sendingProcess.status = 'failed';
       });
   };
 
@@ -43,14 +42,14 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
 
     const url = new FormData(e.target).get('url');
     const urls = state.feeds.map((feed) => feed.url);
-    validator(url, urls).then((result) => {
+    validate(url, urls).then((result) => {
       if (result) {
         watchedState.form.errors = result;
         watchedState.form.isValid = false;
         return;
       }
       watchedState.sendingProcess.status = 'loading';
-      feedRequest(url);
+      getFeedRequest(url);
     });
   };
 
@@ -65,12 +64,6 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
     watchedState.openedPostInModal = readPostId;
   };
 
-  if (entities.postsDiv) {
-    entities.postsDiv.addEventListener('click', readPost);
-  }
-
-  entities.form.objectForm.addEventListener('submit', onSubmittedForm);
-
   const getNewPosts = (posts) => {
     const initialPostsIds = state.posts.map(({ id }) => id);
     const initialPostsIdsSet = new Set(initialPostsIds);
@@ -80,7 +73,7 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
   const updatePosts = () => {
     const { feeds } = state;
 
-    if (!feeds.length < 1) {
+    if (!feeds.length) {
       setTimeout(updatePosts, defaultTimeout);
       return;
     }
@@ -101,6 +94,12 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
         setTimeout(updatePosts, defaultTimeout);
       });
   };
+
+  if (entities.postsDiv) {
+    entities.postsDiv.addEventListener('click', readPost);
+  }
+
+  entities.form.objectForm.addEventListener('submit', onSubmittedForm);
 
   updatePosts();
 };
