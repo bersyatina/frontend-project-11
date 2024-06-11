@@ -20,9 +20,9 @@ const getRssData = (url) => {
   return objectUrl.href;
 };
 
-const app = (entities, initState, i18nextInstance, axiosInstance) => {
+const app = (selectors, initState, i18nextInstance, axiosInstance) => {
   const state = { ...initState };
-  const watchedState = watch(state, entities, i18nextInstance);
+  const watchedState = watch(state, selectors, i18nextInstance);
 
   const getFeedRequest = (url) => {
     axiosInstance.get(getRssData(url))
@@ -42,15 +42,15 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
 
     const url = new FormData(e.target).get('url');
     const urls = state.feeds.map((feed) => feed.url);
-    validate(url, urls).then((result) => {
-      if (result) {
-        watchedState.form.errors = result;
+    validate(url, urls)
+      .then(() => {
+        watchedState.sendingProcess.status = 'loading';
+        getFeedRequest(url);
+      })
+      .catch((error) => {
+        watchedState.form.errors = error;
         watchedState.form.isValid = false;
-        return;
-      }
-      watchedState.sendingProcess.status = 'loading';
-      getFeedRequest(url);
-    });
+      });
   };
 
   const postExist = (postId) => state.posts.some((post) => post.id === postId);
@@ -73,11 +73,6 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
   const updatePosts = () => {
     const { feeds } = state;
 
-    if (!feeds.length) {
-      setTimeout(updatePosts, defaultTimeout);
-      return;
-    }
-
     const promises = feeds.map(({ url }) => axiosInstance.get(getRssData(url))
       .then((response) => {
         const parsedData = parseRss(response.data.contents);
@@ -95,17 +90,17 @@ const app = (entities, initState, i18nextInstance, axiosInstance) => {
       });
   };
 
-  if (entities.postsDiv) {
-    entities.postsDiv.addEventListener('click', readPost);
+  if (selectors.postsDiv) {
+    selectors.postsDiv.addEventListener('click', readPost);
   }
 
-  entities.form.objectForm.addEventListener('submit', onSubmittedForm);
+  selectors.form.objectForm.addEventListener('submit', onSubmittedForm);
 
   updatePosts();
 };
 
 export default () => {
-  const entities = {
+  const selectors = {
     form: {
       objectForm: document.querySelector('.rss-form'),
       input: document.querySelector('#url-input'),
@@ -145,7 +140,7 @@ export default () => {
       fallbackLng: initState.language,
     })
     .then(() => {
-      app(entities, initState, i18nextInstance, axiosInstance);
+      app(selectors, initState, i18nextInstance, axiosInstance);
     })
-    .catch((error) => { throw error.message; });
+    .catch((error) => { console.log(`Неизвестная ошибка: ${error.message}`); });
 };

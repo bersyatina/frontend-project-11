@@ -1,7 +1,6 @@
 const isValidXML = (document) => {
   const errorElement = document.querySelector('parsererror');
-  const root = document.documentElement.nodeName;
-  return !errorElement && root === 'rss';
+  return !errorElement;
 };
 
 const getPosts = (xmlDocument) => {
