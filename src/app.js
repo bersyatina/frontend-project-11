@@ -48,7 +48,7 @@ const app = (selectors, initState, i18nextInstance, axiosInstance) => {
         getFeedRequest(url);
       })
       .catch((error) => {
-        watchedState.form.errors = error;
+        watchedState.form.error = error;
         watchedState.form.isValid = false;
       });
   };
@@ -115,7 +115,7 @@ export default () => {
   const initState = {
     form: {
       isValid: true,
-      errors: null,
+      error: null,
     },
     sendingProcess: {
       status: 'wait',

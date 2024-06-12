@@ -165,7 +165,7 @@ export default (state, selectors, i18nextInstance) => onChange(state, (path, val
     case 'sendingProcess.errors':
       showErrorMessage(selectors.feedback, state.sendingProcess.errors, i18nextInstance);
       break;
-    case 'form.errors':
+    case 'form.error':
       showErrorMessage(selectors.feedback, value, i18nextInstance);
       break;
     case 'loading':

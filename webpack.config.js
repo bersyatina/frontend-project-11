@@ -25,9 +25,6 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/i,
-      },
-      {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: 'asset',
       },
